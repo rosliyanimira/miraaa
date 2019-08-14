@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\peminjam;
 
 class PeminjamController extends Controller
 {
@@ -13,7 +14,13 @@ class PeminjamController extends Controller
      */
     public function index()
     {
-        //
+        $peminjam= peminjam::all();
+        $response =[
+            'susccec'=>true,
+            'data'=>$peminjam,
+            'massage'=>'berhasil'
+        ];
+        return view('peminjam.index');
     }
 
     /**
@@ -23,7 +30,13 @@ class PeminjamController extends Controller
      */
     public function create()
     {
-        //
+        $peminjam= peminjam::all();
+        $response =[
+            'susccec'=>true,
+            'data'=>$peminjam,
+            'massage'=>'berhasil'
+        ];
+        return response()->json($response, 200);
     }
 
     /**
@@ -34,7 +47,16 @@ class PeminjamController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $peminjam = new peminjam();
+        $peminjam->name = $request->name;
+        $peminjam->email = $request->email;
+        $peminjam->password = bcrypt($request->password);
+        $peminjam->save();
+
+        $role = Role::where('name', 'superadmin')->first();
+        $useattachRole($role);
+
+        return response()->json('berhasil');
     }
 
     /**
@@ -45,7 +67,13 @@ class PeminjamController extends Controller
      */
     public function show($id)
     {
-        //
+        $peminjam = peminjam::findOrFail($id);
+        $response = [
+            'suscces'=>true,
+            'data'=>$peminjam,
+            'massage'=>'berhasil'
+        ];
+        return response()->json($response,200);
     }
 
     /**
@@ -56,7 +84,13 @@ class PeminjamController extends Controller
      */
     public function edit($id)
     {
-        //
+        $peminjam = peminjam::findOrFaill($id);
+        $response = [
+            'success'=>true,
+            'data'=>$peminjam,
+            'massage'=>'berhasil'
+        ];
+        return response()->json($response,200);
     }
 
     /**
@@ -68,7 +102,16 @@ class PeminjamController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $peminjam = peminjam::findOrFaill($id);
+        $peminjam->name = $request->name;
+        $peminjam->email = $request->email;
+        $peminjam->password = bcrypt($request->password);
+        $peminjam->save();
+
+        $role = Role::where('name', 'superadmin')->first();
+        $useattachRole($role);
+
+        return response()->json('berhasil');
     }
 
     /**
@@ -79,6 +122,13 @@ class PeminjamController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $peminjam = peminjam::findOrFaill($id);
+        $peminjam->delete();
+        $response=[
+            'success'=>true,
+            'data'=>$peminjam,
+            'massage'=>'berhasil. menghapus'
+        ];
+        return response()->json($response,200);
     }
 }

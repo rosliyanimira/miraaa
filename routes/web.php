@@ -19,6 +19,6 @@ Route::get('/', function () {
 Route::get('/tasks','TasksController@index');
 Route::resource('user', 'UserController');
 
-Auth::routes();
-
+Auth::routes(['register'=>false]);
 Route::get('/home', 'HomeController@index')->name('home');
+Route::resource('peminjam', 'PeminjamController');
